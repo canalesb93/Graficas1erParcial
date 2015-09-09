@@ -20,7 +20,7 @@
 
 using namespace std;
 
-int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8;
+int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8, textZoneHeight = screenHeight * 0.2;
 double cardWidth = screenWidth/4.0, cardHeight = gameZoneHeight/4.0;
 int timer = 0, seconds = 0, minutes = 0, delta = 1, turns = 0;
 vector<int> num;
@@ -52,9 +52,9 @@ void randomCards() {
     cout << endl;
 }
 
-void drawTime(std::string pTimer) {
+void drawTime(string pTimer) {
     glPushMatrix();
-    glTranslatef(20, 450, 0.0);
+    glTranslatef(screenWidth * 0.1,screenHeight * 0.88, 0.0);
     glScalef(0.3, -0.3, 0.0);
     for (int x = 0; x < pTimer.length(); x++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , pTimer[x]);
@@ -93,7 +93,7 @@ void myTimer(int i) {
     glutTimerFunc(100, myTimer,1);
 }
 
-void drawCardNum(std::string text,int x,int y) {
+void drawCardNum(string text,int x,int y) {
     glPushMatrix();
     glTranslatef(x, y, 0.0);
     glScalef(0.35, -0.35, 0.0);
@@ -105,8 +105,9 @@ void drawCardNum(std::string text,int x,int y) {
 
 void drawText(std::string text,int x,int y) {
     glPushMatrix();
-    glTranslatef(x - 120, y, 0.0);
-    glScalef(0.15, -0.15, 0.0);
+    glTranslatef(x, y, 0.0);
+    glScalef(0.12, -0.12, 0.0);
+    //glScalef(1/screenWidth/0.01, -(1/screenHeight/0.01), 0.0);
     for (int c=0; c < text.length(); c++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , text[c]);
     }
@@ -252,20 +253,20 @@ void display() {
     getTime();
     
     string turno = to_string(turns/2);
-    drawText("Turno: " + turno,350,450);
+    drawText("Turno: " + turno,screenWidth * 0.3,screenHeight * 0.865);
     
     //Instrucciones
-    drawText("'I' :Iniciar ",150,550);
-    drawText("'P' :Pausa",280,550);
-    drawText("'R' :Reiniciar",440,550);
-    drawText("'Esc' :Salir",620,550);
+    drawText("'I' :Iniciar ",screenWidth * 0.1,screenHeight * 0.97);
+    drawText("'P' :Pausa",screenWidth * 0.205,screenHeight * 0.97);
+    drawText("'R' :Reiniciar",screenWidth * 0.3202,screenHeight * 0.97);
+    drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
     
     if(win) {
-        drawText("You won in " + to_string(turns/2) + "!", 300, 360);
+        drawText("You won in " + to_string(turns/2) + " turns and in " + "!", screenWidth * 0.3, screenHeight * 0.6);
     }
     
     //Autor
-    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",150,500);
+    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
     
     //Intercambia los frame buffers
     glutSwapBuffers();//ya tiene integrado el glFlush
