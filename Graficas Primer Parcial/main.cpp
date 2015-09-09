@@ -16,6 +16,8 @@
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+#include <ctime>
+
 using namespace std;
 
 int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8;
@@ -32,6 +34,7 @@ bool help = false;
 int randomGen (int i) { return rand()%i;}
 
 void randomCards() {
+    cout << rand() << endl;
     num.clear();
     states = vector<int>(16, 0);
     for (int i = 0; i < 8; ++i) {
@@ -42,11 +45,10 @@ void randomCards() {
     
     random_shuffle(num.begin(), num.end(), randomGen);
     
-    /*
     cout << "vector contains: ";
     for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
         cout << ' ' << *it;
-    cout << endl; */
+    cout << endl;
 }
 
 void drawTime(std::string pTimer) {
@@ -117,6 +119,7 @@ void reshape(int w,int h) {
     gluOrtho2D(0,w,h,0);
     screenHeight = h;
     screenWidth = w;
+    gameZoneHeight = screenHeight * 0.8;
     cardWidth = screenWidth/4.0;
     cardHeight = gameZoneHeight/4.0;
     glutPostRedisplay();
@@ -171,7 +174,10 @@ void display() {
                 break;
             }
         }
-        
+        if(win) {
+            stop = true;
+            cout << "GAME WON!" << endl;
+        }
         if (help && !stop) {
             cout << "vector contains: ";
             for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
@@ -180,7 +186,6 @@ void display() {
             cout << endl;
         }
     }
-    if(win) drawText("You won in " + to_string(turns/2) + "!", 300, 360);
     
     // pinta Rectangulos
     double x1 = 0, x2 = cardWidth;
@@ -226,12 +231,12 @@ void display() {
     
     // pinta numeros
     string carta;
-    int x=0;
+    int y=0;
     for(int i = 0; i < num.size(); i++){
         carta = to_string(num[i]);
+        if(i && i%4 == 0) y++;
         if(states[i] != 0)
-            drawCardNum(carta, (10 + (x * cardWidth)), 100);
-        x++;
+            drawCardNum(carta, (cardWidth*0.4 + (i%4 * cardWidth)), (cardHeight*0.7 + (y*cardHeight)) );
     }
     
     
@@ -246,6 +251,10 @@ void display() {
     drawText("'P' :Pausa",280,550);
     drawText("'R' :Reiniciar",440,550);
     drawText("'Esc' :Salir",620,550);
+    
+    if(win) {
+        drawText("You won in " + to_string(turns/2) + "!", 300, 360);
+    }
     
     //Autor
     drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",150,500);
@@ -313,12 +322,11 @@ void myMouse(int button, int state, int x, int y) {
         //Si el usuario oprime el boton izq del mouse
         int selected;
         if (button == GLUT_LEFT_BUTTON && stop != true) {
-            if (y < 120 && y >= 0) {
+            if (y < gameZoneHeight && y >= 0) {
                 if(turns%2 == 0){
                     clearSelected();
                 }
-                selected = (x / (double)screenWidth) * 16.0;
-                cout << "x: " << x << " y: " << y << endl; 
+                selected = ((x / (double)screenWidth) * 4.0) + ((int)((y / (double)gameZoneHeight) * 4.0)) * 4;
                 if(states[selected] != 2) {
                     states[selected] = 1;
                     turns++;
@@ -374,6 +382,7 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
 }
 
 int main(int argc, char *argv[]) {
+    srand(time(0));
     glutInit(&argc, argv);
     glutInitWindowSize(720,640);
     glutInitWindowPosition(100,100);
