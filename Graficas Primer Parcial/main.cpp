@@ -18,7 +18,9 @@
 #include <algorithm>
 using namespace std;
 
-int screenWidth = 720, screenHeight = 640, timer = 0, seconds = 0, minutes = 0, delta = 1, turns = 0;
+int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8;
+double cardWidth = screenWidth/4.0, cardHeight = gameZoneHeight/4.0;
+int timer = 0, seconds = 0, minutes = 0, delta = 1, turns = 0;
 vector<int> num;
 vector<int> states; // 0 == hidden, 1 == selected, 2 == revealed
 
@@ -112,6 +114,11 @@ void reshape(int w,int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0,w,h,0);
+    screenHeight = h;
+    screenWidth = w;
+    cardWidth = screenWidth/4.0;
+    cardHeight = gameZoneHeight/4.0;
+    glutPostRedisplay();
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -170,34 +177,45 @@ void display() {
     if(win) drawText("You won in " + to_string(turns/2) + "!", 300, 360);
     
     // pinta Rectangulos
-    int x1 = 0;
-    int x2 = 45;
+    double x1 = 0, x2 = cardWidth;
+    double y1 = 0, y2 = cardHeight;
+    bool colorFirst = true;
     int currentRectangle = 0;
-    for (int x = 0; x < 8; x++) {
-        if(states[currentRectangle] == 0){
-            glColor3f(0.0f, 0.3f, 0.5f);
-        } else if(states[currentRectangle] == 1){
-            glColor3f(0.7f, 0.0f, 0.7f);
-        } else {
-            glColor3f(0.40f, 0.60f, 0.80f);
+    for(int y = 0; y < 4; y++){
+        x1 = 0;
+        x2 = cardWidth;
+        
+        for (int x = 0; x < 2; x++) {
+            if(states[currentRectangle] == 0){
+                if(colorFirst) glColor3f(0.0f, 0.3f, 0.5f);
+                else glColor3f(0.5f, 0.0f, 0.3f);
+            } else if(states[currentRectangle] == 1){
+                glColor3f(0.7f, 0.0f, 0.7f);
+            } else {
+                glColor3f(0.40f, 0.60f, 0.80f);
+            }
+            currentRectangle++;
+            glRectf(x1,y1, x2, y2);
+            x1 += cardWidth;
+            x2 += cardWidth;
+            if(states[currentRectangle] == 0){
+                if(colorFirst) glColor3f(0.5f, 0.0f, 0.3f);
+                else glColor3f(0.0f, 0.3f, 0.5f);
+            } else if(states[currentRectangle] == 1){
+                glColor3f(0.7f, 0.0f, 0.7f);
+            } else {
+                glColor3f(0.40f, 0.60f, 0.80f);
+            }
+            currentRectangle++;
+            glRectf(x1,y1,x2,y2);
+            x1 += cardWidth;
+            x2 += cardWidth;
         }
-        currentRectangle++;
-        glRecti(x1,0, x2, 120);
-        x1 += 45;
-        x2 += 45;
-        if(states[currentRectangle] == 0){
-            glColor3f(0.5f, 0.0f, 0.3f);
-        } else if(states[currentRectangle] == 1){
-            glColor3f(0.7f, 0.0f, 0.7f);
-        } else {
-            glColor3f(0.40f, 0.60f, 0.80f);
-        }
-        currentRectangle++;
-        glRecti(x1,0, x2, 120);
-        x1 += 45;
-        x2 += 45;
+        colorFirst = !colorFirst;
+        y1 += cardHeight;
+        y2 += cardHeight;
     }
-    
+
     glColor3f(1,1,1);
     
     // pinta numeros
@@ -206,7 +224,7 @@ void display() {
     for(int i = 0; i < num.size(); i++){
         carta = to_string(num[i]);
         if(states[i] != 0)
-            drawCardNum(carta, (10 + (x * 45)), 100);
+            drawCardNum(carta, (10 + (x * cardWidth)), 100);
         x++;
     }
     
@@ -239,7 +257,8 @@ void myMouse(int button, int state, int x, int y) {
                 if(turns%2 == 0){
                     clearSelected();
                 }
-                selected = x / 720.0 * 16;
+                selected = (x / (double)screenWidth) * 16.0;
+                cout << "x: " << x << " y: " << y << endl; 
                 if(states[selected] != 2) {
                     states[selected] = 1;
                     turns++;
