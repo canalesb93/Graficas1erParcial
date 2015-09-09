@@ -18,7 +18,7 @@
 #include <algorithm>
 using namespace std;
 
-int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8;
+int screenWidth = 720, screenHeight = 640, gameZoneHeight = screenHeight * 0.8, textZoneHeight = screenHeight * 0.2;
 double cardWidth = screenWidth/4.0, cardHeight = gameZoneHeight/4.0;
 int timer = 0, seconds = 0, minutes = 0, delta = 1, turns = 0;
 vector<int> num;
@@ -90,7 +90,7 @@ void myTimer(int i) {
     glutTimerFunc(100, myTimer,1);
 }
 
-void drawCardNum(std::string text,int x,int y) {
+void drawCardNum(string text,int x,int y) {
     glPushMatrix();
     glTranslatef(x, y, 0.0);
     glScalef(0.35, -0.35, 0.0);
@@ -102,8 +102,9 @@ void drawCardNum(std::string text,int x,int y) {
 
 void drawText(std::string text,int x,int y) {
     glPushMatrix();
-    glTranslatef(x - 120, y, 0.0);
-    glScalef(0.15, -0.15, 0.0);
+    glTranslatef(x + (screenWidth * .3), y + (screenHeight * .3), 0.0);
+    glScalef(0.12, -0.12, 0.0);
+    //glScalef(1/screenWidth/0.01, -(1/screenHeight/0.01), 0.0);
     for (int c=0; c < text.length(); c++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , text[c]);
     }
@@ -180,7 +181,7 @@ void display() {
             cout << endl;
         }
     }
-    if(win) drawText("You won in " + to_string(turns/2) + "!", 300, 360);
+    if(win) drawText("You won in " + to_string(turns/2) + "!", screenWidth/2.5, screenHeight/2.5);
     
     // pinta Rectangulos
     double x1 = 0, x2 = cardWidth;
@@ -239,16 +240,16 @@ void display() {
     getTime();
     
     string turno = to_string(turns/2);
-    drawText("Turno: " + turno,350,450);
+    drawText("Turno: " + turno,0,370);
     
     //Instrucciones
-    drawText("'I' :Iniciar ",150,550);
-    drawText("'P' :Pausa",280,550);
-    drawText("'R' :Reiniciar",440,550);
-    drawText("'Esc' :Salir",620,550);
+    drawText("'I' :Iniciar ",-190,420);
+    drawText("'P' :Pausa",-60,420);
+    drawText("'R' :Reiniciar",120,420);
+    drawText("'Esc' :Salir",300,420);
     
     //Autor
-    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",150,500);
+    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",-190,390);
     
     //Intercambia los frame buffers
     glutSwapBuffers();//ya tiene integrado el glFlush
