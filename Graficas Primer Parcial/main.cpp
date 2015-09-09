@@ -25,6 +25,7 @@ vector<int> states; // 0 == hidden, 1 == selected, 2 == revealed
 bool stop = true;
 bool inProgress = false;
 bool win = false;
+bool help = false;
 
 int randomGen (int i) { return rand()%i;}
 
@@ -39,11 +40,11 @@ void randomCards() {
     
     random_shuffle(num.begin(), num.end(), randomGen);
     
+    /*
     cout << "vector contains: ";
     for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
         cout << ' ' << *it;
-    
-    cout << endl;
+    cout << endl; */
 }
 
 void drawTime(std::string pTimer) {
@@ -164,8 +165,13 @@ void display() {
             }
         }
         
-        
-        
+        if (help && !stop) {
+            cout << "vector contains: ";
+            for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
+                cout << ' ' << *it;
+            
+            cout << endl;
+        }
     }
     if(win) drawText("You won in " + to_string(turns/2) + "!", 300, 360);
     
@@ -262,6 +268,7 @@ void onMenu(int opcion) {
             //Ayuda
         case 5:
             //Display/Hide Card Nums
+            help = !help;
             break;
     }
     glutPostRedisplay();
@@ -318,6 +325,12 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
         case 'p':
         case 'P':
             stop = true;
+            break;
+            
+            //Ayuda
+        case 'a':
+        case 'A':
+            help = !help;
             break;
             
             //Reset
