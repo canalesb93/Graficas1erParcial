@@ -244,14 +244,19 @@ void display() {
                 if(colorFirst) glColor3f(0.0f, 0.3f, 0.5f);
                 else glColor3f(0.5f, 0.0f, 0.3f);
             }
-            currentRectangle++;
             glRectf(x1,y1, x2, y2);
             
-            glEnable (GL_POLYGON_STIPPLE);
-            glColor3f (0.0, 0.0, 0.0);
-            glPolygonStipple (sym);
-            glRectf(x1,y1, x2, y2);
-            glDisable (GL_POLYGON_STIPPLE);
+            if(states[currentRectangle] == 0){
+                glEnable (GL_POLYGON_STIPPLE);
+                glColor3f (0.0, 0.0, 0.0);
+                glPolygonStipple (sym);
+                glRectf(x1,y1, x2, y2);
+                glDisable (GL_POLYGON_STIPPLE);
+            }
+            currentRectangle++;
+
+            
+            
             
             x1 += cardWidth;
             x2 += cardWidth;
@@ -265,14 +270,17 @@ void display() {
                 if(colorFirst) glColor3f(0.5f, 0.0f, 0.3f);
                 else glColor3f(0.0f, 0.3f, 0.5f);
             }
-            currentRectangle++;
             glRectf(x1,y1,x2,y2);
+            if(states[currentRectangle] == 0){
+                glEnable (GL_POLYGON_STIPPLE);
+                glColor3f (0.0, 0.0, 0.0);
+                glPolygonStipple (sym);
+                glRectf(x1,y1, x2, y2);
+                glDisable (GL_POLYGON_STIPPLE);
+            }
             
-            glEnable (GL_POLYGON_STIPPLE);
-            glColor3f (0.0, 0.0, 0.0);
-            glPolygonStipple (sym);
-            glRectf(x1,y1, x2, y2);
-            glDisable (GL_POLYGON_STIPPLE);
+            currentRectangle++;
+
             
             x1 += cardWidth;
             x2 += cardWidth;
