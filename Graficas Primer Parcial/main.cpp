@@ -51,9 +51,9 @@ void randomCards() {
     cout << endl;
 }
 
-void drawTime(std::string pTimer) {
+void drawTime(string pTimer) {
     glPushMatrix();
-    glTranslatef(20, 450, 0.0);
+    glTranslatef(screenWidth * 0.1,screenHeight * 0.88, 0.0);
     glScalef(0.3, -0.3, 0.0);
     for (int x = 0; x < pTimer.length(); x++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , pTimer[x]);
@@ -104,7 +104,7 @@ void drawCardNum(string text,int x,int y) {
 
 void drawText(std::string text,int x,int y) {
     glPushMatrix();
-    glTranslatef(x + (screenWidth * .3), y + (screenHeight * .3), 0.0);
+    glTranslatef(x, y, 0.0);
     glScalef(0.12, -0.12, 0.0);
     //glScalef(1/screenWidth/0.01, -(1/screenHeight/0.01), 0.0);
     for (int c=0; c < text.length(); c++) {
@@ -247,20 +247,20 @@ void display() {
     getTime();
     
     string turno = to_string(turns/2);
-    drawText("Turno: " + turno,0,370);
+    drawText("Turno: " + turno,screenWidth * 0.3,screenHeight * 0.865);
     
     //Instrucciones
-    drawText("'I' :Iniciar ",-190,420);
-    drawText("'P' :Pausa",-60,420);
-    drawText("'R' :Reiniciar",120,420);
-    drawText("'Esc' :Salir",300,420);
+    drawText("'I' :Iniciar ",screenWidth * 0.1,screenHeight * 0.97);
+    drawText("'P' :Pausa",screenWidth * 0.205,screenHeight * 0.97);
+    drawText("'R' :Reiniciar",screenWidth * 0.3202,screenHeight * 0.97);
+    drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
     
     if(win) {
-        drawText("You won in " + to_string(turns/2) + "!", 300, 360);
+        drawText("You won in " + to_string(turns/2) + "!", 300, screenHeight * 0.6);
     }
     
     //Autor
-    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",-190,390);
+    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
     
     //Intercambia los frame buffers
     glutSwapBuffers();//ya tiene integrado el glFlush
