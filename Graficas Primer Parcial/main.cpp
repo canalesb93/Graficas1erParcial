@@ -37,7 +37,7 @@ string minutesStr, secondsStr, milisecondsStr;
 int randomGen (int i) { return rand()%i;}
 
 void randomCards() {
-    cout << rand() << endl;
+    //cout << rand() << endl;
     num.clear();
     states = vector<int>(16, 0);
     for (int i = 0; i < 8; ++i) {
@@ -48,10 +48,11 @@ void randomCards() {
     
     random_shuffle(num.begin(), num.end(), randomGen);
     
+    /*
     cout << "vector contains: ";
     for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
         cout << ' ' << *it;
-    cout << endl;
+    cout << endl; */
 }
 
 void drawTime(string pTimer) {
@@ -95,10 +96,10 @@ void myTimer(int i) {
     glutTimerFunc(100, myTimer,1);
 }
 
-void drawCardNum(string text,int x,int y) {
+void drawCardNum(string text,int x,int y, float size) {
     glPushMatrix();
     glTranslatef(x, y, 0.0);
-    float scale = (float)screenWidth / (720.0 * 2.0);
+    float scale = size * ((float)screenWidth / (720.0 * 2.0));
     glScalef(scale, -scale, 1.0);
     for (int c=0; c < text.length(); c++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , text[c]);
@@ -183,33 +184,6 @@ void display() {
     //Autor
     drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
     
-    
-    
-    if(inProgress){
-        
-        // checa si esta ganado
-        win = true;
-        inProgress = false;
-        for(int i = 0; i < states.size(); i++){
-            if(states[i] != 2){
-                win = false;
-                inProgress = true;
-                break;
-            }
-        }
-        if(win) {
-            stop = true;
-            cout << "GAME WON!" << endl;
-        }
-        if (help && !stop) {
-            cout << "vector contains: ";
-            for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
-                cout << ' ' << *it;
-            
-            cout << endl;
-        }
-    }
-    
     // pinta Rectangulos
     double x1 = 0, x2 = cardWidth;
     double y1 = 0, y2 = cardHeight;
@@ -263,9 +237,35 @@ void display() {
         carta = to_string(num[i]);
         if(i && i%4 == 0) y++;
         if(states[i] != 0)
-            drawCardNum(carta, (cardWidth*0.4 + (i%4 * cardWidth)), (cardHeight*0.7 + (y*cardHeight)) );
+            drawCardNum(carta, (cardWidth*0.4 + (i%4 * cardWidth)), (cardHeight*0.7 + (y*cardHeight)), 1.0 );
     }
     
+    if(inProgress){
+        
+        // checa si esta ganado
+        win = true;
+        inProgress = false;
+        for(int i = 0; i < states.size(); i++){
+            if(states[i] != 2){
+                win = false;
+                inProgress = true;
+                break;
+            }
+        }
+        if(win) {
+            stop = true;
+            cout << "GAME WON!" << endl;
+        }
+        if (help && !stop) {
+            string carta;
+            int y=0;
+            for(int i = 0; i < num.size(); i++){
+                carta = to_string(num[i]);
+                if(i && i%4 == 0) y++;
+                drawCardNum(carta, (cardWidth*0.9 + (i%4 * cardWidth)), (cardHeight*0.9 + (y*cardHeight)), 0.3 );
+            }
+        }
+    }
     
     if(win) {
         glColor3f(0,0,1);
