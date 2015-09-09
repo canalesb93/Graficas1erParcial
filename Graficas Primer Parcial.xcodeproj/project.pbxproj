@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A45ECB51B9FC679006DAF0C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A45ECB41B9FC679006DAF0C /* main.cpp */; };
+		0A45ECBD1B9FCC44006DAF0C /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A45ECBB1B9FCC44006DAF0C /* GLUT.framework */; };
+		0A45ECBE1B9FCC44006DAF0C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A45ECBC1B9FCC44006DAF0C /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		0A45ECB11B9FC679006DAF0C /* Graficas Primer Parcial */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Graficas Primer Parcial"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A45ECB41B9FC679006DAF0C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0A45ECBB1B9FCC44006DAF0C /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		0A45ECBC1B9FCC44006DAF0C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A45ECBD1B9FCC44006DAF0C /* GLUT.framework in Frameworks */,
+				0A45ECBE1B9FCC44006DAF0C /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +47,8 @@
 		0A45ECA81B9FC679006DAF0C = {
 			isa = PBXGroup;
 			children = (
+				0A45ECBB1B9FCC44006DAF0C /* GLUT.framework */,
+				0A45ECBC1B9FCC44006DAF0C /* OpenGL.framework */,
 				0A45ECB31B9FC679006DAF0C /* Graficas Primer Parcial */,
 				0A45ECB21B9FC679006DAF0C /* Products */,
 			);
