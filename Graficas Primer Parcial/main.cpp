@@ -32,6 +32,8 @@ bool inProgress = false;
 bool win = false;
 bool help = false;
 
+string minutesStr, secondsStr, milisecondsStr;
+
 int randomGen (int i) { return rand()%i;}
 
 void randomCards() {
@@ -71,9 +73,9 @@ void getTime() {
     }
     
     //Convierte tiempo a string
-    std::string minutesStr = std::to_string(minutes);
-    std::string secondsStr = std::to_string(seconds % 60);
-    std::string milisecondsStr = std::to_string(timer % 10);
+    minutesStr = to_string(minutes);
+    secondsStr = to_string(seconds % 60);
+    milisecondsStr = to_string(timer % 10);
     
     //Verifica si requiere 0
     if ((seconds % 60) <= 9) {
@@ -178,12 +180,10 @@ void display() {
     drawText("'R' :Reiniciar",screenWidth * 0.3202,screenHeight * 0.97);
     drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
     
-    if(win) {
-        drawText("You won in " + to_string(turns/2) + " turns and in " + "!", screenWidth * 0.3, screenHeight * 0.6);
-    }
-    
     //Autor
     drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
+    
+    
     
     if(inProgress){
         
@@ -267,7 +267,12 @@ void display() {
     }
     
     
-
+    if(win) {
+        glColor3f(0,0,1);
+        glRectf(screenWidth * 0.25, screenHeight * 0.65,screenWidth * 0.75, screenHeight * 0.55);
+        glColor3f(1,1,1);
+        drawText("You won in " + to_string(turns/2) + " turns and in " + minutesStr + ":" + secondsStr + "." + milisecondsStr + "!", screenWidth * 0.3, screenHeight * 0.6);
+    }
     
     //Intercambia los frame buffers
     glutSwapBuffers();//ya tiene integrado el glFlush
