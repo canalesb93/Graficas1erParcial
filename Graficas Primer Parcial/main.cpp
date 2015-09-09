@@ -96,7 +96,8 @@ void myTimer(int i) {
 void drawCardNum(string text,int x,int y) {
     glPushMatrix();
     glTranslatef(x, y, 0.0);
-    glScalef(0.35, -0.35, 0.0);
+    float scale = (float)screenWidth / (720.0 * 2.0);
+    glScalef(scale, -scale, 1.0);
     for (int c=0; c < text.length(); c++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN , text[c]);
     }
@@ -121,10 +122,8 @@ void reshape(int w,int h) {
     gluOrtho2D(0,w,h,0);
     screenHeight = h;
     screenWidth = w;
-    if(screenHeight > 300)
-        gameZoneHeight = screenHeight * 0.8;
-    else
-        gameZoneHeight = screenHeight;
+    if(screenHeight < 350 || screenWidth < 600) gameZoneHeight = screenHeight;
+    else gameZoneHeight = screenHeight * 0.8;
     cardWidth = screenWidth/4.0;
     cardHeight = gameZoneHeight/4.0;
     glutPostRedisplay();
@@ -166,6 +165,25 @@ void display() {
     glLoadIdentity();
     
     checkPairs();
+    
+    //Imprime Timer
+    getTime();
+    
+    string turno = to_string(turns/2);
+    drawText("Turno: " + turno,screenWidth * 0.3,screenHeight * 0.865);
+    
+    //Instrucciones
+    drawText("'I' :Iniciar ",screenWidth * 0.1,screenHeight * 0.97);
+    drawText("'P' :Pausa",screenWidth * 0.205,screenHeight * 0.97);
+    drawText("'R' :Reiniciar",screenWidth * 0.3202,screenHeight * 0.97);
+    drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
+    
+    if(win) {
+        drawText("You won in " + to_string(turns/2) + " turns and in " + "!", screenWidth * 0.3, screenHeight * 0.6);
+    }
+    
+    //Autor
+    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
     
     if(inProgress){
         
@@ -249,24 +267,7 @@ void display() {
     }
     
     
-    //Imprime Timer
-    getTime();
-    
-    string turno = to_string(turns/2);
-    drawText("Turno: " + turno,screenWidth * 0.3,screenHeight * 0.865);
-    
-    //Instrucciones
-    drawText("'I' :Iniciar ",screenWidth * 0.1,screenHeight * 0.97);
-    drawText("'P' :Pausa",screenWidth * 0.205,screenHeight * 0.97);
-    drawText("'R' :Reiniciar",screenWidth * 0.3202,screenHeight * 0.97);
-    drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
-    
-    if(win) {
-        drawText("You won in " + to_string(turns/2) + " turns and in " + "!", screenWidth * 0.3, screenHeight * 0.6);
-    }
-    
-    //Autor
-    drawText("Autores: Marco Ramirez : A01191344 y Ricardo Canales : A01191463",screenWidth * 0.1,screenHeight * 0.92);
+
     
     //Intercambia los frame buffers
     glutSwapBuffers();//ya tiene integrado el glFlush
