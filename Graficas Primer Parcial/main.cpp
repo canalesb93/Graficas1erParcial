@@ -25,6 +25,7 @@ double cardWidth = screenWidth/4.0, cardHeight = gameZoneHeight/4.0;
 int timer = 0, seconds = 0, minutes = 0, delta = 1, turns = 0;
 vector<int> num;
 vector<int> states; // 0 == hidden, 1 == selected, 2 == revealed
+vector<bool> hover;
 
 bool stop = true;
 bool inProgress = false;
@@ -119,7 +120,10 @@ void reshape(int w,int h) {
     gluOrtho2D(0,w,h,0);
     screenHeight = h;
     screenWidth = w;
-    gameZoneHeight = screenHeight * 0.8;
+    if(screenHeight > 300)
+        gameZoneHeight = screenHeight * 0.8;
+    else
+        gameZoneHeight = screenHeight;
     cardWidth = screenWidth/4.0;
     cardHeight = gameZoneHeight/4.0;
     glutPostRedisplay();
@@ -197,25 +201,29 @@ void display() {
         x2 = cardWidth;
         
         for (int x = 0; x < 2; x++) {
-            if(states[currentRectangle] == 0){
+            if(states[currentRectangle] == 1){
+                glColor3f(0.7f, 0.0f, 0.7f);
+            } else if(states[currentRectangle] == 2) {
+                glColor3f(0.40f, 0.60f, 0.80f);
+            } else if(hover[currentRectangle]){
+                glColor3f(0.3f, 0.8f, 0.8f);
+            } else {
                 if(colorFirst) glColor3f(0.0f, 0.3f, 0.5f);
                 else glColor3f(0.5f, 0.0f, 0.3f);
-            } else if(states[currentRectangle] == 1){
-                glColor3f(0.7f, 0.0f, 0.7f);
-            } else {
-                glColor3f(0.40f, 0.60f, 0.80f);
             }
             currentRectangle++;
             glRectf(x1,y1, x2, y2);
             x1 += cardWidth;
             x2 += cardWidth;
-            if(states[currentRectangle] == 0){
+            if(states[currentRectangle] == 1){
+                glColor3f(0.7f, 0.0f, 0.7f);
+            } else if(states[currentRectangle] == 2){
+                glColor3f(0.40f, 0.60f, 0.80f);
+            } else if(hover[currentRectangle]){
+                glColor3f(0.3f, 0.8f, 0.8f);
+            } else {
                 if(colorFirst) glColor3f(0.5f, 0.0f, 0.3f);
                 else glColor3f(0.0f, 0.3f, 0.5f);
-            } else if(states[currentRectangle] == 1){
-                glColor3f(0.7f, 0.0f, 0.7f);
-            } else {
-                glColor3f(0.40f, 0.60f, 0.80f);
             }
             currentRectangle++;
             glRectf(x1,y1,x2,y2);
@@ -336,6 +344,16 @@ void myMouse(int button, int state, int x, int y) {
     }
 }
 
+void myMotion(int x, int y){
+    for(int i = 0; i < hover.size(); i++){ hover[i] = false; }
+    if (y < gameZoneHeight && y >= 0) {
+        int selected = ((x / (double)screenWidth) * 4.0) + ((int)((y / (double)gameZoneHeight) * 4.0)) * 4;
+        if(states[selected] != 2) {
+            hover[selected] = true;
+        }
+    }
+}
+
 void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
     switch (theKey) {
             //Inicio
@@ -381,7 +399,9 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
     }
 }
 
+
 int main(int argc, char *argv[]) {
+    hover = vector<bool>(16, false);
     srand(time(0));
     glutInit(&argc, argv);
     glutInitWindowSize(720,640);
@@ -395,6 +415,7 @@ int main(int argc, char *argv[]) {
     glutTimerFunc(100, myTimer,1);
     glutKeyboardFunc(myKeyboard);
     glutMouseFunc(myMouse);
+    glutPassiveMotionFunc(myMotion);
     randomCards();
     crearMenu();
     glutMainLoop();
