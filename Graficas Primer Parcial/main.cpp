@@ -162,6 +162,42 @@ void checkPairs(){
 }
 
 void display() {
+    
+    GLubyte sym[] = {
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+        0x08,0x00,0x00,0x08,
+        0x09,0xFF,0xFF,0xC8,
+        0x08,0x00,0x00,0x08,
+        0x09,0x00,0x80,0x48,
+        0x08,0x80,0x80,0x88,
+        0x08,0x40,0x81,0x08,
+        0x08,0x20,0x82,0x08,
+        0x08,0x10,0x84,0x08,
+        0x08,0x08,0x88,0x08,
+        0x08,0x04,0x90,0x08,
+        0x08,0x02,0x20,0x08,
+        0x08,0x01,0x40,0x08,
+        0x08,0x00,0x80,0x08,
+        0x08,0x01,0x40,0x08,
+        0x08,0x02,0x20,0x08,
+        0x08,0x04,0x90,0x08,
+        0x08,0x08,0x88,0x08,
+        0x08,0x10,0x84,0x08,
+        0x08,0x20,0x82,0x08,
+        0x08,0x40,0x81,0x08,
+        0x08,0x80,0x80,0x88,
+        0x09,0x00,0x80,0x48,
+        0x08,0x80,0x80,0x88,
+        0x08,0x40,0x01,0x08,
+        0x09,0xFF,0xFF,0xC8,
+        0x08,0x00,0x00,0x08,
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+        0x00,0x00,0x00,0x00,
+    };
+    
     //BKG Color
     glClearColor(0,0,1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -189,6 +225,10 @@ void display() {
     double y1 = 0, y2 = cardHeight;
     bool colorFirst = true;
     int currentRectangle = 0;
+    
+    //Activar un patron de relleno
+    
+    
     for(int y = 0; y < 4; y++){
         x1 = 0;
         x2 = cardWidth;
@@ -205,7 +245,14 @@ void display() {
                 else glColor3f(0.5f, 0.0f, 0.3f);
             }
             currentRectangle++;
+            
+            glEnable (GL_POLYGON_STIPPLE);
+            //glColor3f (1.0, 1.0, 1.0);
             glRectf(x1,y1, x2, y2);
+            glPolygonStipple (sym);
+            
+
+            
             x1 += cardWidth;
             x2 += cardWidth;
             if(states[currentRectangle] == 1){
@@ -219,6 +266,11 @@ void display() {
                 else glColor3f(0.0f, 0.3f, 0.5f);
             }
             currentRectangle++;
+            
+            //glColor3f (1.0, 1.0, 1.0);
+            glPolygonStipple (sym);
+            glDisable (GL_POLYGON_STIPPLE);
+            
             glRectf(x1,y1,x2,y2);
             x1 += cardWidth;
             x2 += cardWidth;
@@ -280,7 +332,7 @@ void display() {
 
 void onMenu(int opcion) {
     switch(opcion) {
-            //Iniciar
+        //Iniciar
         case 1:
             if(inProgress == false){
                 randomCards();
@@ -288,7 +340,8 @@ void onMenu(int opcion) {
             }
             stop = false;
             break;
-            //Reiniciar
+        
+        //Reiniciar
         case 2:
             stop = true;
             timer = 0;
@@ -299,18 +352,23 @@ void onMenu(int opcion) {
             glClear( GL_COLOR_BUFFER_BIT );
             glFlush();// Limpia la pantalla
             break;
-            //Pausa
+        
+        //Pausa
         case 3:
             stop = true;
             break;
-            //Salir
+        
+        //Salir
         case 4:
             exit(-1);
             break;
-            //Ayuda
+        
+        //Ayuda
         case 5:
             //Display/Hide Card Nums
-            help = !help;
+            if(inProgress){
+                help = !help;
+            }
             break;
     }
     glutPostRedisplay();
@@ -382,7 +440,9 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
             //Ayuda
         case 'a':
         case 'A':
-            help = !help;
+            if(inProgress){
+                help = !help;
+            }
             break;
             
             //Reset
