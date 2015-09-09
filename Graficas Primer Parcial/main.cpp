@@ -27,6 +27,7 @@ vector<int> states; // 0 == hidden, 1 == selected, 2 == revealed
 bool stop = true;
 bool inProgress = false;
 bool win = false;
+bool help = false;
 
 int randomGen (int i) { return rand()%i;}
 
@@ -41,11 +42,11 @@ void randomCards() {
     
     random_shuffle(num.begin(), num.end(), randomGen);
     
+    /*
     cout << "vector contains: ";
     for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
         cout << ' ' << *it;
-    
-    cout << endl;
+    cout << endl; */
 }
 
 void drawTime(std::string pTimer) {
@@ -171,8 +172,13 @@ void display() {
             }
         }
         
-        
-        
+        if (help && !stop) {
+            cout << "vector contains: ";
+            for (vector<int>::iterator it=num.begin(); it!=num.end(); ++it)
+                cout << ' ' << *it;
+            
+            cout << endl;
+        }
     }
     if(win) drawText("You won in " + to_string(turns/2) + "!", 300, 360);
     
@@ -248,6 +254,60 @@ void display() {
     glutSwapBuffers();//ya tiene integrado el glFlush
 }
 
+void onMenu(int opcion) {
+    switch(opcion) {
+            //Iniciar
+        case 1:
+            if(inProgress == false){
+                randomCards();
+                inProgress = true;
+            }
+            stop = false;
+            break;
+            //Reiniciar
+        case 2:
+            stop = true;
+            timer = 0;
+            turns = 0;
+            win = false;
+            randomCards();
+            inProgress = false;
+            glClear( GL_COLOR_BUFFER_BIT );
+            glFlush();// Limpia la pantalla
+            break;
+            //Pausa
+        case 3:
+            stop = true;
+            break;
+            //Salir
+        case 4:
+            exit(-1);
+            break;
+            //Ayuda
+        case 5:
+            //Display/Hide Card Nums
+            help = !help;
+            break;
+    }
+    glutPostRedisplay();
+}
+void crearMenu(void) {
+    int autores, menuPrincipal;
+    
+    autores = glutCreateMenu(onMenu);
+    glutAddMenuEntry("Marco Ramirez : A01191344", 0);
+    glutAddMenuEntry("Ricardo Canales : A01191463", 0);
+    
+    menuPrincipal = glutCreateMenu(onMenu);
+    glutAddMenuEntry("Iniciar", 1);
+    glutAddMenuEntry("Reiniciar", 2);
+    glutAddMenuEntry("Pausa", 3);
+    glutAddMenuEntry("Salir", 4);
+    glutAddMenuEntry("Ayuda", 5);
+    glutAddSubMenu("Autores", autores);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
 void myMouse(int button, int state, int x, int y) {
     if (state == GLUT_DOWN) {
         //Si el usuario oprime el boton izq del mouse
@@ -286,6 +346,12 @@ void myKeyboard(unsigned char theKey, int mouseX, int mouseY) {
             stop = true;
             break;
             
+            //Ayuda
+        case 'a':
+        case 'A':
+            help = !help;
+            break;
+            
             //Reset
         case 'R':
         case 'r':
@@ -321,6 +387,7 @@ int main(int argc, char *argv[]) {
     glutKeyboardFunc(myKeyboard);
     glutMouseFunc(myMouse);
     randomCards();
+    crearMenu();
     glutMainLoop();
     return EXIT_SUCCESS;
 }

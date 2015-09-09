@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CEEB0CD1-4937-45EA-B41F-812E53D3B234</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Graficas Primer Parcial</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9FE5186FCE70B7813671EA3FB589AC5075C0112E</key>
+		<string>github.com:canalesb93/Graficas1erParcial.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Graficas Primer Parcial.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9FE5186FCE70B7813671EA3FB589AC5075C0112E</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:canalesb93/Graficas1erParcial.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9FE5186FCE70B7813671EA3FB589AC5075C0112E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9FE5186FCE70B7813671EA3FB589AC5075C0112E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Graficas1erParcial</string>
+		</dict>
+	</array>
+</dict>
+</plist>
