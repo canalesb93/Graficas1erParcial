@@ -187,8 +187,6 @@ void display() {
             cout << endl;
         }
     }
-
-    if(win) drawText("You won in " + to_string(turns/2) + "!", screenWidth/2.5, screenHeight/2.5);
     
     // pinta Rectangulos
     double x1 = 0, x2 = cardWidth;
@@ -256,7 +254,7 @@ void display() {
     drawText("'Esc' :Salir",screenWidth * 0.4601,screenHeight * 0.97);
     
     if(win) {
-        drawText("You won in " + to_string(turns/2) + "!", 300, screenHeight * 0.6);
+        drawText("You won in " + to_string(turns/2) + " turns and in " + "!", screenWidth * 0.3, screenHeight * 0.6);
     }
     
     //Autor
